@@ -53,3 +53,32 @@ applications). `features/` folders earn their keep with multiple
 distinct feature areas, which this doesn't have. No backend means
 no `services/`. State is simple enough for useState, so no
 `context/`/store needed yet.
+
+## 2026-08-15 — Form state as one object, not separate useState per field
+
+**Decision:** `JobForm` holds all six form fields in a single `formData`
+state object, updated via spread (`{ ...formData, field: value }`) on
+each input's `onChange`, rather than a separate `useState` per field.
+**Why:** All six fields belong to one cohesive entry submitted together
+as a single object — matches the shape of the data being built, and
+keeps `handleSubmit` simple (just spread `formData` into the new entry).
+
+## 2026-08-15 — Functional state updates for cross-component state changes
+
+**Decision:** When a child component (e.g. `JobForm`) needs to update
+state it doesn't have direct read access to, use the functional update
+form of the setter: `setJobApplications((current) => [...current, newEntry])`
+instead of `setJobApplications([...jobApplications, newEntry])`.
+**Why:** `JobForm` is only passed `setJobApplications`, not the
+`jobApplications` array itself, by design (it only needs to add, not
+read). The functional update form lets React supply the current state
+directly, without needing the array passed down as a separate prop.
+
+## 2026-08-15 — Status field uses a dynamically generated `<select>`
+
+**Decision:** The status dropdown in `JobForm` generates its `<option>`
+elements from the `STATUS_OPTIONS` constant via `.map()`, rather than
+four hardcoded `<option>` tags.
+**Why:** Single source of truth for valid status values — if the list
+of statuses ever changes, it only needs to update in one place
+(`data/statusOptions.js`), not in every place a dropdown is built.
