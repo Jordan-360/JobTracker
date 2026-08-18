@@ -82,3 +82,19 @@ four hardcoded `<option>` tags.
 **Why:** Single source of truth for valid status values — if the list
 of statuses ever changes, it only needs to update in one place
 (`data/statusOptions.js`), not in every place a dropdown is built.
+
+## 2026-08-XX — Custom useLocalStorage hook for persistence
+
+**Decision:** Built a custom `useLocalStorage` hook (in `hooks/useLocalStorage.js`)
+that mirrors `useState`'s return shape (`[value, setValue]`), but reads
+from `localStorage` on initial load (via a lazy `useState` initializer)
+and writes to `localStorage` via `useEffect` whenever the value changes.
+**Why:** Needed persistence across page refreshes without a backend.
+Matching `useState`'s exact interface meant swapping it into `App.jsx`
+required almost no changes elsewhere — `jobApplications` state and all
+components using it stayed the same, only the hook creating that state
+changed.
+**Key learnings:** `localStorage` only stores strings, so `JSON.stringify`/
+`JSON.parse` handle the round-trip. Lazy initial state (`useState(() => {...})`)
+ensures the localStorage read only happens once, on first render, not
+every re-render.
