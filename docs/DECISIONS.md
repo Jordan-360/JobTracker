@@ -83,7 +83,7 @@ four hardcoded `<option>` tags.
 of statuses ever changes, it only needs to update in one place
 (`data/statusOptions.js`), not in every place a dropdown is built.
 
-## 2026-08-XX — Custom useLocalStorage hook for persistence
+## 2026-08-17 — Custom useLocalStorage hook for persistence
 
 **Decision:** Built a custom `useLocalStorage` hook (in `hooks/useLocalStorage.js`)
 that mirrors `useState`'s return shape (`[value, setValue]`), but reads
