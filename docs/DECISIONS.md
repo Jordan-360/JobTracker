@@ -98,3 +98,18 @@ changed.
 `JSON.parse` handle the round-trip. Lazy initial state (`useState(() => {...})`)
 ensures the localStorage read only happens once, on first render, not
 every re-render.
+
+## 2026-08-18 — Export/Import via Blob and FileReader
+
+**Decision:** Built `exportData`/`importData` as plain utility functions
+in `utils/exportImport.js`. Export uses Blob + URL.createObjectURL +
+a programmatically-clicked invisible link to trigger a JSON file
+download. Import uses a programmatically-created, invisible file
+input + FileReader to read and parse a selected JSON file back into
+state.
+**Why:** Neither function needs to be a hook or component — they're
+stateless utilities that take arguments (data to export, or a file +
+callback) and don't own any state themselves. `importData` accepts an
+`onSuccess` callback rather than calling `setJobApplications` directly,
+since the utils file has no access to React state — this keeps it
+decoupled and reusable.
