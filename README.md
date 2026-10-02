@@ -78,7 +78,7 @@ Each job application is stored as a plain object:
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/yourusername/jobtracker.git
+git clone https://github.com/Jordan-360/jobtracker.git
 cd jobtracker
 
 # 2. Install dependencies
