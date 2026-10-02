@@ -1,72 +1,88 @@
-import { STATUS_OPTIONS } from '../data/statusOptions'
 import { useState } from 'react'
+import { STATUS_OPTIONS } from '../data/statusOptions'
+
+const INITIAL_FORM = {
+  jobTitle: '',
+  companyName: '',
+  status: 'Applied',
+  dateApplied: '',
+  postingLink: '',
+  applicationLink: '',
+}
 
 function JobForm({ setJobApplications }) {
-  const [formData, setFormData] = useState({
-    jobTitle: '',
-    companyName: '',
-    status: 'Applied',
-    dateApplied: '',
-    applicationLink: '',
-    postingLink: '',
-  })
+  const [formData, setFormData] = useState(INITIAL_FORM)
+
+  const update = (field) => (e) =>
+    setFormData({ ...formData, [field]: e.target.value })
 
   const handleSubmit = (e) => {
     e.preventDefault()
-
-    const newEntry = {
-      ...formData,
-      id: crypto.randomUUID(),
-    }
-
-    setJobApplications((currentJobApplications) => [
-      ...currentJobApplications,
-      newEntry,
-    ])
+    const newEntry = { ...formData, id: crypto.randomUUID() }
+    setJobApplications((current) => [...current, newEntry])
+    setFormData(INITIAL_FORM)
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        value={formData.jobTitle}
-        onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
-      />
-      <input
-        value={formData.companyName}
-        onChange={(e) =>
-          setFormData({ ...formData, companyName: e.target.value })
-        }
-      />
-      <select
-        value={formData.status}
-        onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-      >
-        {STATUS_OPTIONS.map((status) => (
-          <option key={status} value={status}>
-            {status}
-          </option>
-        ))}
-      </select>
-      <input
-        value={formData.dateApplied}
-        onChange={(e) =>
-          setFormData({ ...formData, dateApplied: e.target.value })
-        }
-      />
-      <input
-        value={formData.applicationLink}
-        onChange={(e) =>
-          setFormData({ ...formData, applicationLink: e.target.value })
-        }
-      />
-      <input
-        value={formData.postingLink}
-        onChange={(e) =>
-          setFormData({ ...formData, postingLink: e.target.value })
-        }
-      />
-      <button type="submit">Add Application</button>
+    <form className="job-form" onSubmit={handleSubmit}>
+      <h2>Add Application</h2>
+      <div className="job-form__grid">
+        <div className="form-group">
+          <label>Job Title</label>
+          <input
+            value={formData.jobTitle}
+            onChange={update('jobTitle')}
+            placeholder="Software Engineer"
+          />
+        </div>
+        <div className="form-group">
+          <label>Company</label>
+          <input
+            value={formData.companyName}
+            onChange={update('companyName')}
+            placeholder="Acme Corp"
+          />
+        </div>
+        <div className="form-group">
+          <label>Status</label>
+          <select value={formData.status} onChange={update('status')}>
+            {STATUS_OPTIONS.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="form-group">
+          <label>Date Applied</label>
+          <input
+            type="date"
+            value={formData.dateApplied}
+            onChange={update('dateApplied')}
+          />
+        </div>
+        <div className="form-group">
+          <label>Posting Link</label>
+          <input
+            value={formData.postingLink}
+            onChange={update('postingLink')}
+            placeholder="https://..."
+          />
+        </div>
+        <div className="form-group">
+          <label>Application Link</label>
+          <input
+            value={formData.applicationLink}
+            onChange={update('applicationLink')}
+            placeholder="https://..."
+          />
+        </div>
+      </div>
+      <button className="btn btn--primary" type="submit">
+        Add Application
+      </button>
     </form>
   )
 }
+
 export default JobForm

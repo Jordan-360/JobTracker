@@ -1,1 +1,1 @@
-export const STATUS_OPTIONS = ['Applied', 'Interveiwing', 'Rejected', 'Offer']
+export const STATUS_OPTIONS = ['Applied', 'Interviewing', 'Offer', 'Rejected']
