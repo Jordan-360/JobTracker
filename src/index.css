@@ -30,6 +30,18 @@ body {
   padding: 2rem;
 }
 
+@media (max-width: 520px) {
+  body {
+    padding: 1rem;
+  }
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
 a {
   color: var(--primary);
   text-decoration: none;
