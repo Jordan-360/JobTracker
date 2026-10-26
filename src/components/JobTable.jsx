@@ -25,7 +25,9 @@ function JobTable({
               <th>Date Applied</th>
               <th>Posting</th>
               <th>Application</th>
-              <th></th>
+              <th>
+                <span className="visually-hidden">Actions</span>
+              </th>
             </tr>
           </thead>
           <tbody>

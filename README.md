@@ -11,10 +11,10 @@
 | ➕ **Add Applications** | Log job title, company, status, date, and both posting & application links |
 | 🏷️ **Status Tracking**  | Four lifecycle stages: `Applied` → `Interviewing` → `Offer` / `Rejected`   |
 | ✏️ **Inline Editing**   | Edit any row directly in the table — no page navigation                    |
-| 🗑️ **Delete Entries**   | Remove applications you no longer want to track                            |
+| 🗑️ **Delete Entries**   | Remove applications you no longer want to track (with confirmation)        |
 | 💾 **Auto-Persistence** | Everything saves to `localStorage` automatically — no account needed       |
 | 📤 **JSON Export**      | Back up your data as a `.json` file at any time                            |
-| 📥 **JSON Import**      | Restore or transfer your data from a previously exported file              |
+| 📥 **JSON Import**      | Restore or transfer data from an exported file — validated before loading  |
 
 ---
 
@@ -25,7 +25,7 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES2022-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
 ![CSS](https://img.shields.io/badge/CSS-Plain-1572B6?style=flat-square&logo=css3&logoColor=white)
 
-- **React 19** — UI layer with `useState` / `useContext` (no Redux — not needed at this scale)
+- **React 19** — UI layer with built-in `useState` (no Redux — not needed at this scale)
 - **Vite 8** — lightning-fast dev server and build tool
 - **Plain CSS** — zero framework dependencies, hand-rolled styles
 - **localStorage** — browser-native persistence, no backend required
@@ -46,7 +46,8 @@ src/
 ├── hooks/
 │   └── useLocalStorage.js  # Persistent state hook
 ├── utils/
-│   └── exportImport.js     # JSON export & import helpers
+│   ├── exportImport.js     # JSON export & import helpers
+│   └── formatDate.js       # ISO date → readable display date
 ├── data/
 │   └── statusOptions.js    # Status enum values
 ├── App.jsx
@@ -89,6 +90,19 @@ npm run dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173) in your browser — that's it.
+
+---
+
+## ☁️ Deploying to Vercel
+
+No config file is needed — Vercel auto-detects Vite.
+
+1. Push the repo to GitHub.
+2. In Vercel, **Add New → Project** and import the repository.
+3. Keep the detected defaults: Framework **Vite**, build command `npm run build`, output directory `dist`.
+4. Click **Deploy**. Every push to `main` redeploys automatically.
+
+> Data lives in each visitor's own browser (`localStorage`), so a deployed copy is private to whoever uses it. Use **Export** to back up before clearing browser data or switching devices.
 
 ---
 

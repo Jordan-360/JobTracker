@@ -113,3 +113,28 @@ callback) and don't own any state themselves. `importData` accepts an
 `onSuccess` callback rather than calling `setJobApplications` directly,
 since the utils file has no access to React state — this keeps it
 decoupled and reusable.
+
+## 2026-10-26 — Pre-deploy hardening
+
+**Decision:** Before deploying, harden the edges where outside data enters
+the app rather than adding features.
+**What changed:**
+
+- `useLocalStorage` wraps `JSON.parse`/`setItem` in `try/catch`, so
+  corrupted storage or a full/blocked quota no longer crashes the app.
+- `importData` validates the file (valid JSON, an array, object entries),
+  normalizes each entry to the data shape (unknown status → `Applied`,
+  missing id → new UUID), and reports problems through an `onError`
+  callback shown as an inline notice. Import asks before replacing
+  existing data.
+- `deleteJobApplication`/`updateJobApplication` now use functional updates,
+  consistent with `JobForm`.
+- Form: `required` on title/company/date, `type="url"` on links,
+  `useId`-linked labels for accessibility; whitespace is trimmed on save.
+- Dates display via `formatDate`, which parses ISO dates as local time to
+  avoid the off-by-one-day bug from `new Date('YYYY-MM-DD')` being UTC.
+- Export revokes its object URL and adds the date to the filename.
+
+**Why:** Imported files and localStorage are the only untrusted inputs in
+an app with no backend — validating them there means every component
+downstream can trust the data shape.
